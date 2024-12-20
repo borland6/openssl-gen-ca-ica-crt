@@ -1,21 +1,21 @@
 ### generate CA key (ca.key) 
-openssl genrsa -aes256 -passout file:/root/openssl-test/pass.txt -out ca.key 4096
+openssl genrsa -aes256 -passout file:pass.txt -out ca.key 4096
 
 ### create self-signed CA Root Certificate (ca.crt)
-openssl req -new -x509 -key ca.key -days 7300 -sha256 -extensions v3_ca -out ca.crt -passin file:/root/openssl-test/pass.txt
+openssl req -new -x509 -key ca.key -days 7300 -sha256 -extensions v3_ca -out ca.crt -passin file:pass.txt
 
 ### check ca.crt content
 openssl x509 -noout -text -in ca.crt
 
 ### generate intermediate CA key (ica.key)
-openssl genrsa -aes256 -passout file:/root/openssl-test/pass.txt -out ica.key 4096
+openssl genrsa -aes256 -passout file:pass.txt -out ica.key 4096
 
 ### generate intermediate CA CSR (ica.csr)
-openssl req -sha256 -new -key ica.key -out ica.csr -passin file:/root/openssl-test/pass.txt
+openssl req -sha256 -new -key ica.key -out ica.csr -passin file:pass.txt
 
 ### sign intermediate CA certificate by Root CA (ica.crt)
 openssl x509 -req -in ica.csr \
-               -CA ca.crt -CAkey ca.key -passin file:/root/openssl-test/pass.txt \
+               -CA ca.crt -CAkey ca.key -passin file:pass.txt \
                -CAserial ca.serial -CAcreateserial \
                -days 730 \
                -extensions intermediate_ca -extfile ica.ext \
